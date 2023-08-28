@@ -24,9 +24,6 @@ spec:
             - name: http
               containerPort: ${PORT}
               protocol: TCP
-          envFrom:
-            - secretRef:
-                name: deepface
           resources:
             limits:
               memory: 250Mi

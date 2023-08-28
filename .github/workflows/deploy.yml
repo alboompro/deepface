@@ -44,7 +44,7 @@ jobs:
 
       - name: Kustomize build definitions
         env:
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: latest
           IMAGE_URL: ${{ steps.build-image.outputs.image }}
           PORT: "5000"
         working-directory: deploy

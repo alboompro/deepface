@@ -19,7 +19,15 @@ spec:
         - name: deepface
           image: ${IMAGE_URL}:${IMAGE_TAG}
           command: ["gunicorn"]
-          args: ["--workers=1", "--timeout=3600", "--bind=0.0.0.0:5000", "app:create_app()"]
+          args:
+            [
+              "--workers=1",
+              "--timeout=5400",
+              "--bind=0.0.0.0:5000",
+              "--access-logfile=-",
+              "--error-logfile=-",
+              "app:create_app()",
+            ]
           ports:
             - name: http
               containerPort: ${PORT}

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deepface
+  labels:
+    language: python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deepface
+  template:
+    metadata:
+      labels:
+        app: deepface
+    spec:
+      serviceAccountName: deepface
+      containers:
+        - name: deepface
+          image: ${IMAGE_URL}:${IMAGE_TAG}
+          command: ["gunicorn"]
+          args: ["--workers=1", "--timeout=3600", "--bind=0.0.0.0:5000", "app:create_app()"]
+          ports:
+            - name: http
+              containerPort: ${PORT}
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: deepface
+          resources:
+            limits:
+              memory: 250Mi
+              cpu: 250m
+            requests:
+              memory: 150Mi
+              cpu: 100m

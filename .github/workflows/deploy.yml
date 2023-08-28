@@ -1,0 +1,60 @@
+name: Deploy Production
+run-name: ${{ github.actor }} deploying Deepface Api (${{ github.ref }})
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      ECR_REPOSITORY: deepface-api
+      EKS_CLUSTER: k8s-cluster-3
+      AWS_REGION: us-east-1
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: latest
+        run: |
+          # Build a docker container and
+          # push it to ECR so that it can
+          # be deployed to ECS.
+          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest || echo 1
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY"
+
+      - name: Kustomize build definitions
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_URL: ${{ steps.build-image.outputs.image }}
+          PORT: "5000"
+        working-directory: deploy
+        run: curl -s https://alboom-dev.s3.amazonaws.com/kubernetes-kustomize-base/runner.sh | bash
+
+      - name: Deploy to EKS
+        uses: ianbelcher/eks-kubectl-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ env.AWS_REGION }}
+          cluster_name: ${{ env.EKS_CLUSTER }}
+          args: apply -f deploy/builded.yaml

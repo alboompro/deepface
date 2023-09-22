@@ -18,6 +18,7 @@ spec:
       containers:
         - name: deepface
           image: ${IMAGE_URL}:${IMAGE_TAG}
+          imagePullPolicy: Always
           command: ["gunicorn"]
           args:
             [

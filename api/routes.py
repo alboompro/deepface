@@ -11,29 +11,32 @@ def home():
 
 @blueprint.route("/represent", methods=["POST"])
 def represent():
-    input_args = request.get_json()
+    try:
+        input_args = request.get_json()
 
-    if input_args is None:
-        return {"message": "empty input set passed"}
+        if input_args is None:
+            return {"message": "empty input set passed"}
 
-    img_path = input_args.get("img")
-    if img_path is None:
-        return {"message": "you must pass img_path input"}
+        img_path = input_args.get("img")
+        if img_path is None:
+            return {"message": "you must pass img_path input"}
 
-    model_name = input_args.get("model_name", "VGG-Face")
-    detector_backend = input_args.get("detector_backend", "opencv")
-    enforce_detection = input_args.get("enforce_detection", True)
-    align = input_args.get("align", True)
+        model_name = input_args.get("model_name", "VGG-Face")
+        detector_backend = input_args.get("detector_backend", "opencv")
+        enforce_detection = input_args.get("enforce_detection", True)
+        align = input_args.get("align", True)
 
-    obj = service.represent(
-        img_path=img_path,
-        model_name=model_name,
-        detector_backend=detector_backend,
-        enforce_detection=enforce_detection,
-        align=align,
-    )
+        obj = service.represent(
+            img_path=img_path,
+            model_name=model_name,
+            detector_backend=detector_backend,
+            enforce_detection=enforce_detection,
+            align=align,
+        )
 
-    return obj
+        return obj
+    except ValueError as e:
+        return { "error": str(e) }, 422
 
 
 @blueprint.route("/verify", methods=["POST"])

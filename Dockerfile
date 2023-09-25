@@ -1,6 +1,6 @@
 #base image
 FROM python:3.8
-LABEL org.opencontainers.image.source https://github.com/serengil/deepface
+# LABEL org.opencontainers.image.source https://github.com/serengil/deepface
 # -----------------------------------
 # create required folder
 RUN mkdir /app
@@ -23,7 +23,7 @@ RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6 -y
 # -----------------------------------
 # if you will use gpu, then you should install tensorflow-gpu package
-# RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org tensorflow-gpu
+RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org tensorflow-gpu
 # -----------------------------------
 # install deepface from pypi release (might be out-of-the-date)
 # RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org deepface

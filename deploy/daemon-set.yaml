@@ -1,11 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: deepface
   labels:
     language: python
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: deepface
@@ -15,6 +14,10 @@ spec:
         app: deepface
     spec:
       serviceAccountName: deepface
+      nodeSelector:
+        role: production
+        kind: gpu
+        gpu: "true"
       containers:
         - name: deepface
           image: ${IMAGE_URL}:${IMAGE_TAG}
@@ -33,10 +36,3 @@ spec:
             - name: http
               containerPort: ${PORT}
               protocol: TCP
-          resources:
-            limits:
-              memory: 4Gi
-              cpu: 2000m
-            requests:
-              memory: 2Gi
-              cpu: 1000m

@@ -39,12 +39,14 @@ jobs:
           # be deployed to ECS.
           docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest || echo 1
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY"
 
       - name: Kustomize build definitions
         env:
-          IMAGE_TAG: latest
+          IMAGE_TAG: ${{ github.sha }}
           IMAGE_URL: ${{ steps.build-image.outputs.image }}
           PORT: "5000"
         working-directory: deploy

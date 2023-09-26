@@ -35,6 +35,7 @@ COPY ./api/app.py ./api/routes.py ./api/service.py ./requirements.txt ./setup.py
 WORKDIR /app
 
 # install deepface from source code (always up-to-date)
+RUN pip install -U nvidia-cudnn-cu11
 RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org -e .
 
 # environment variables

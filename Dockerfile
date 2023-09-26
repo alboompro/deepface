@@ -8,6 +8,8 @@ FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 # Set environment to noninteractive (this prevents some prompts)
 ENV DEBIAN_FRONTEND=noninteractive
 
+RUN add-apt-repository ppa:deadsnakes/ppa
+
 # Install some basic utilities and dependencies
 RUN apt-get update && apt-get install -y \
   wget \
@@ -17,7 +19,7 @@ RUN apt-get update && apt-get install -y \
   libxext6 \
   libxrender-dev \
   libglib2.0-0 \
-  python3.8 \
+  python3.11 \
   python3-pip \
   && pip install --upgrade pip \
   && rm -rf /var/lib/apt/lists/*

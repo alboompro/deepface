@@ -1,5 +1,5 @@
 #base image
-FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu20.04
 
 # ENV NV_CUDNN_VERSION=8.6.0
 # ENV NV_CUDNN_PACKAGE=libcudnn8=8.6.0+cuda11.4
@@ -9,10 +9,7 @@ FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install some basic utilities and dependencies
-RUN apt-get update && \
-  apt-get install -y software-properties-common && \
-  add-apt-repository ppa:deadsnakes/ppa && \
-  apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \
   wget \
   build-essential \
   ffmpeg \
@@ -20,7 +17,7 @@ RUN apt-get update && \
   libxext6 \
   libxrender-dev \
   libglib2.0-0 \
-  python3.11 \
+  python3.8 \
   python3-pip \
   && pip install --upgrade pip \
   && rm -rf /var/lib/apt/lists/*
@@ -52,7 +49,7 @@ WORKDIR /app
 # RUN . $CONDA_DIR/etc/conda/activate.d/env_vars.sh
 # RUN pip install tensorflow==2.12.0
 
-RUN pip install .
+RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org -e .
 
 # environment variables
 ENV PYTHONUNBUFFERED=1

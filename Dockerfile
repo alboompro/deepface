@@ -1,6 +1,8 @@
 #base image
 FROM nvidia/cuda:11.4.3-cudnn8-devel-ubuntu20.04
 
+ENV NV_CUDNN_VERSION=8.6.0
+
 # Set environment to noninteractive (this prevents some prompts)
 ENV DEBIAN_FRONTEND=noninteractive
 

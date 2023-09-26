@@ -39,6 +39,7 @@ COPY ./api/routes.py /app/
 COPY ./api/service.py /app/
 COPY ./requirements.txt /app/
 COPY ./setup.py /app/
+COPY ./README.md /app/
 
 # switch to application directory
 WORKDIR /app

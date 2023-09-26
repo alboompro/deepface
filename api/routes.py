@@ -36,7 +36,13 @@ def represent():
 
         return obj
     except Exception as e:
-        return { "error": str(e) }, 422
+        message = str(e)
+
+        # Check if message is multiline
+        if "\n" in message:
+            message = message.splitlines()
+
+        return { "error": message }, 422
 
 
 @blueprint.route("/verify", methods=["POST"])

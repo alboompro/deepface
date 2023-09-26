@@ -23,9 +23,9 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 # Install miniconda
-ENV CONDA_DIR /opt/conda
-RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
-  /bin/bash ~/miniconda.sh -b -p /opt/conda
+# ENV CONDA_DIR /opt/conda
+# RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+#   /bin/bash ~/miniconda.sh -b -p /opt/conda
 
 ENV PATH=$CONDA_DIR/bin:$PATH
 ENV DEBIAN_FRONTEND=
@@ -37,18 +37,18 @@ RUN mkdir -p /app/deepface
 COPY ./deepface /app/deepface
 COPY ./api/app.py ./api/routes.py ./requirements.txt ./api/service.py ./setup.py ./README.md  /app/
 
-# switch to application directory
+# switch to application directory 
 WORKDIR /app
 
-# install deepface from source code (always up-to-date)
-RUN conda install -c conda-forge cudatoolkit=11.8.0 && \
-  pip install nvidia-cudnn-cu11==8.6.0.163 tensorflow==2.13.*
+# RUN conda install -c conda-forge cudatoolkit=11.8.0 && \
+# pip install nvidia-cudnn-cu11==8.6.0.163 tensorflow==2.13.*
 
-RUN mkdir -p $CONDA_DIR/etc/conda/activate.d
-RUN echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))' >> $CONDA_DIR/etc/conda/activate.d/env_vars.sh
-RUN echo 'export LD_LIBRARY_PATH=$CUDNN_PATH/lib:$CONDA_DIR/lib/:$LD_LIBRARY_PATH' >> $CONDA_DIR/etc/conda/activate.d/env_vars.sh
-RUN . $CONDA_DIR/etc/conda/activate.d/env_vars.sh
+# RUN mkdir -p $CONDA_DIR/etc/conda/activate.d
+# RUN echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))' >> $CONDA_DIR/etc/conda/activate.d/env_vars.sh
+# RUN echo 'export LD_LIBRARY_PATH=$CUDNN_PATH/lib:$CONDA_DIR/lib/:$LD_LIBRARY_PATH' >> $CONDA_DIR/etc/conda/activate.d/env_vars.sh
+# RUN . $CONDA_DIR/etc/conda/activate.d/env_vars.sh
 
+RUN pip install tensorflow==2.6.0
 RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org -e .
 
 # environment variables

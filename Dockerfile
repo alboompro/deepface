@@ -47,7 +47,7 @@ RUN conda install -c conda-forge cudatoolkit=11.8.0 && \
 RUN mkdir -p $CONDA_DIR/etc/conda/activate.d
 RUN echo 'CUDNN_PATH=$(dirname $(python -c "import nvidia.cudnn;print(nvidia.cudnn.__file__)"))' >> $CONDA_DIR/etc/conda/activate.d/env_vars.sh
 RUN echo 'export LD_LIBRARY_PATH=$CUDNN_PATH/lib:$CONDA_DIR/lib/:$LD_LIBRARY_PATH' >> $CONDA_DIR/etc/conda/activate.d/env_vars.sh
-RUN source $CONDA_DIR/etc/conda/activate.d/env_vars.sh
+RUN . $CONDA_DIR/etc/conda/activate.d/env_vars.sh
 
 RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org -e .
 

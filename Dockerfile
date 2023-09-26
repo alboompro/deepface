@@ -8,6 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
   wget \
   build-essential \
+  ffmpeg \
   libsm6 \
   libxext6 \
   libxrender-dev \
@@ -24,7 +25,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install --upgrade pip
 
 # Install TensorFlow GPU version
-RUN pip3 install tensorflow-gpu==2.5
+RUN pip3 install tensorflow-gpu
 
 ENV DEBIAN_FRONTEND=
 

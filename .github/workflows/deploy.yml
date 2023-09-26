@@ -58,3 +58,12 @@ jobs:
           aws_region: ${{ env.AWS_REGION }}
           cluster_name: ${{ env.EKS_CLUSTER }}
           args: apply -f deploy/builded.yaml
+
+      - name: Restart Daemonset
+        uses: ianbelcher/eks-kubectl-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ env.AWS_REGION }}
+          cluster_name: ${{ env.EKS_CLUSTER }}
+          args: -n deepface delete pods -l app=deepface

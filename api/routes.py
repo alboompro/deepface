@@ -35,7 +35,7 @@ def represent():
         )
 
         return obj
-    except ValueError as e:
+    except Exception as e:
         return { "error": str(e) }, 422
 
 

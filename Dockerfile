@@ -13,31 +13,19 @@ RUN apt-get update && apt-get install -y \
   libxext6 \
   libxrender-dev \
   libglib2.0-0 \
-  && rm -rf /var/lib/apt/lists/*
-
-# Install Python and pip
-RUN apt-get update && apt-get install -y \
   python3.8 \
   python3-pip \
+  && pip install --upgrade pip \
   && rm -rf /var/lib/apt/lists/*
-
-# Upgrade pip
-RUN pip install --upgrade pip
 
 ENV DEBIAN_FRONTEND=
 
 # create required folder
-RUN mkdir /app
-RUN mkdir /app/deepface
+RUN mkdir -p /app/deepface
 
 # Copy required files from repo into image
 COPY ./deepface /app/deepface
-COPY ./api/app.py /app/
-COPY ./api/routes.py /app/
-COPY ./api/service.py /app/
-COPY ./requirements.txt /app/
-COPY ./setup.py /app/
-COPY ./README.md /app/
+COPY ./api/app.py ./api/routes.py ./api/service.py ./requirements.txt ./setup.py ./README.md  /app/
 
 # switch to application directory
 WORKDIR /app

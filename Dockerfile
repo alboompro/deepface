@@ -1,5 +1,5 @@
 #base image
-FROM nvidia/cuda:11.0-base-ubuntu20.04
+FROM nvidia/cuda:11.4.3-cudnn8-devel-ubuntu20.04
 
 # Install some basic utilities and dependencies
 RUN apt-get update && apt-get install -y \

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: deepface-gpu
+  labels:
+    language: python
+spec:
+  selector:
+    matchLabels:
+      app: deepface-gpu
+  template:
+    metadata:
+      labels:
+        app: deepface-gpu
+    spec:
+      serviceAccountName: deepface-gpu
+      nodeSelector:
+        role: production
+        kind: gpu
+        gpu: "true"
+      containers:
+        - name: deepface-gpu
+          image: ${IMAGE_URL}:gpu
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+          imagePullPolicy: Always
+          command: ["gunicorn"]
+          args:
+            [
+              "--workers=1",
+              "--timeout=5400",
+              "--bind=0.0.0.0:5000",
+              "--access-logfile=-",
+              "--error-logfile=-",
+              "app:create_app()",
+            ]
+          ports:
+            - name: http
+              containerPort: ${PORT}
+              protocol: TCP

@@ -52,7 +52,7 @@ WORKDIR /app
 # RUN . $CONDA_DIR/etc/conda/activate.d/env_vars.sh
 # RUN pip install tensorflow==2.12.0
 
-RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org -e .
+RUN pip install .
 
 # environment variables
 ENV PYTHONUNBUFFERED=1

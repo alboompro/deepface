@@ -1,5 +1,5 @@
 #base image
-FROM nvidia/cuda:11.4.3-cudnn8-runtime-ubuntu20.04
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 
 # ENV NV_CUDNN_VERSION=8.6.0
 # ENV NV_CUDNN_PACKAGE=libcudnn8=8.6.0+cuda11.4

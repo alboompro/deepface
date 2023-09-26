@@ -1,6 +1,9 @@
 #base image
 FROM nvidia/cuda:11.4.3-cudnn8-devel-ubuntu20.04
 
+# Set environment to noninteractive (this prevents some prompts)
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Install some basic utilities and dependencies
 RUN apt-get update && apt-get install -y \
   wget \
@@ -22,6 +25,8 @@ RUN pip3 install --upgrade pip
 
 # Install TensorFlow GPU version
 RUN pip3 install tensorflow-gpu==2.5
+
+ENV DEBIAN_FRONTEND=
 
 # create required folder
 RUN mkdir /app

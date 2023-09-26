@@ -8,10 +8,11 @@ FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 # Set environment to noninteractive (this prevents some prompts)
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN add-apt-repository ppa:deadsnakes/ppa
-
 # Install some basic utilities and dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+  apt-get install -y software-properties-common && \
+  add-apt-repository ppa:deadsnakes/ppa && \
+  apt-get update && apt-get install -y \
   wget \
   build-essential \
   ffmpeg \

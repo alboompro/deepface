@@ -21,6 +21,9 @@ spec:
       containers:
         - name: deepface
           image: ${IMAGE_URL}:${IMAGE_TAG}
+          resources:
+            limits:
+              nvidia.com/gpu: 1
           imagePullPolicy: Always
           command: ["gunicorn"]
           args:

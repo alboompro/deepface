@@ -22,10 +22,7 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip
-RUN pip3 install --upgrade pip
-
-# Install TensorFlow GPU version
-RUN pip3 install tensorflow-gpu
+RUN pip install --upgrade pip
 
 ENV DEBIAN_FRONTEND=
 

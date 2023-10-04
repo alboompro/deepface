@@ -25,9 +25,17 @@ spec:
             limits:
               nvidia.com/gpu: 1
           imagePullPolicy: Always
-          command:
-            - /bin/sh
-            - ./app/startup.sh
+          command: ["newrelic-admin", "run-program", "gunicorn"]
+          args:
+            - "--workers=1"
+            - "--timeout=5400"
+            - "--bind=0.0.0.0:5000"
+            - "--access-logfile=-"
+            - "--error-logfile=-"
+            - "app:create_app()"
+          env:
+            - name: NEW_RELIC_CONFIG_FILE
+              value: app/newrelic.ini
           ports:
             - name: http
               containerPort: ${PORT}

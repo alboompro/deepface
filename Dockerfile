@@ -10,6 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install some basic utilities and dependencies
 RUN apt-get update && apt-get install -y \
+  sudo \
   curl \
   wget \
   build-essential \
@@ -55,7 +56,7 @@ WORKDIR /app
 RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org -e .
 
 RUN curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && \
-  NEW_RELIC_API_KEY=NRAK-J3DXRVVCUR20SUVZ0Y0QU9PTG05 \
+  sudo NEW_RELIC_API_KEY=NRAK-J3DXRVVCUR20SUVZ0Y0QU9PTG05 \
   NEW_RELIC_ACCOUNT_ID=1393404 /usr/local/bin/newrelic install -n logs-integration
 
 # environment variables

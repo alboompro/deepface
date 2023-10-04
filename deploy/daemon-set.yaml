@@ -27,7 +27,7 @@ spec:
           imagePullPolicy: Always
           command:
             - /bin/sh
-            - app/startup.sh
+            - ./app/startup.sh
           ports:
             - name: http
               containerPort: ${PORT}

@@ -25,16 +25,9 @@ spec:
             limits:
               nvidia.com/gpu: 1
           imagePullPolicy: Always
-          command: ["gunicorn"]
-          args:
-            [
-              "--workers=1",
-              "--timeout=5400",
-              "--bind=0.0.0.0:5000",
-              "--access-logfile=-",
-              "--error-logfile=-",
-              "app:create_app()",
-            ]
+          command:
+            - /bin/sh
+            - .startup.sh
           ports:
             - name: http
               containerPort: ${PORT}

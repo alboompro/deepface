@@ -34,7 +34,9 @@ ENV DEBIAN_FRONTEND=
 RUN mkdir -p /app/deepface
 
 # Copy required files from repo into image
+COPY ./deploy/startup.sh /app/startup.sh
 COPY ./deepface /app/deepface
+COPY ./newrelic.ini /app/newrelic.ini
 COPY ./api/app.py ./api/routes.py ./requirements.txt ./api/service.py ./setup.py ./README.md  /app/
 
 # switch to application directory 
@@ -50,6 +52,10 @@ WORKDIR /app
 # RUN pip install tensorflow==2.12.0
 
 RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org -e .
+
+RUN curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && \
+  NEW_RELIC_API_KEY=NRAK-J3DXRVVCUR20SUVZ0Y0QU9PTG05 \
+  NEW_RELIC_ACCOUNT_ID=1393404 /usr/local/bin/newrelic install -n logs-integration
 
 # environment variables
 ENV PYTHONUNBUFFERED=1

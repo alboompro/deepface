@@ -36,10 +36,12 @@ ENV DEBIAN_FRONTEND=
 RUN mkdir -p /app/deepface
 
 # Copy required files from repo into image
-COPY ./deploy/startup.sh ./startup.sh
+COPY ./deploy/startup.sh /app/startup.sh
 COPY ./deepface /app/deepface
 COPY ./newrelic.ini /app/newrelic.ini
 COPY ./api/app.py ./api/routes.py ./requirements.txt ./api/service.py ./setup.py ./README.md  /app/
+
+RUN ls
 
 # switch to application directory 
 WORKDIR /app
